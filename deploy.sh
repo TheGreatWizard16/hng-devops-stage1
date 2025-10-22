@@ -47,11 +47,9 @@ REPO_URL="$(ask 'Git repository (HTTPS)' '')"
 REPO_URL="$(printf '%s' "$REPO_URL" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
 [[ -z "$REPO_URL" ]] && fail "Repo URL required (HTTPS)."
 
-case "$REPO_URL" in
-  https://*.git) : ;;
-  https://*) fail "Use the HTTPS .git URL (copy from GitHub 'Code' button).";;
-  *) fail "Provide an HTTPS Git URL.";;
-esac
+log "DEBUG REPO_URL=[$REPO_URL]"
+
+[[ "$REPO_URL" == https://* ]] || fail "Provide an HTTPS Git URL."
 
 PAT="$(ask_secret 'Git Personal Access Token (PAT)')"
 [[ -z "$PAT" ]] && fail "PAT is required."
